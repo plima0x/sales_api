@@ -1,0 +1,82 @@
+"cod_city","cod_country","desc_city","qtd_population"
+1,12,"Ahmedabad",7681000
+2,10,"Alexandria",5086000
+3,35,"Atlanta",5572000
+4,15,"Baghdad",6812000
+5,12,"Bangalore",11440000
+6,32,"Bangkok",10156000
+7,29,"Barcelona",5494000
+8,7,"Beijing",19618000
+9,4,"Belo Horizonte",5972000
+10,8,"Bogotá",10574000
+11,2,"Buenos Aires",14967000
+12,10,"Cairo",20076000
+13,7,"Chengdu",8813000
+14,12,"Chennai",10456000
+15,35,"Chicago",8864000
+16,7,"Chongqing",14838000
+17,7,"Dalian",5300000
+18,35,"Dallas",6099000
+19,31,"Dar es Salaam",6048000
+20,12,"Delhi",28514000
+21,3,"Dhaka",19578000
+22,7,"Dongguan",7360000
+23,7,"Foshan",7236000
+24,16,"Fukuoka",5551000
+25,18,"Guadalajara",5023000
+26,7,"Guangzhou",12638000
+27,7,"Hangzhou",7236000
+28,7,"Harbin",6115000
+29,36,"Ho Chi Minh City",8145000
+30,7,"Hong Kong",7429000
+31,35,"Houston",6115000
+32,12,"Hyderabad",9482000
+33,33,"Istanbul",14751000
+34,13,"Jakarta",10517000
+35,7,"Jinan",5052000
+36,27,"Johannesburg",5486000
+37,21,"Karachi",15400000
+38,30,"Khartoum",5534000
+39,9,"Kinshasa",13171000
+40,12,"Kolkata",15333000
+41,17,"Kuala Lumpur",7564000
+42,20,"Lagos",13463000
+43,21,"Lahore",11738000
+44,22,"Lima",10391000
+45,34,"London",9046000
+46,35,"Los Angeles",12458000
+47,1,"Luanda",7774000
+48,29,"Madrid",6497000
+49,23,"Manila",13482000
+50,18,"Mexico City",21581000
+51,35,"Miami",6036000
+52,24,"Moscow",12410000
+53,12,"Mumbai",19980000
+54,16,"Nagoya",9507000
+55,7,"Nanjing",8245000
+56,35,"New York City",18819000
+57,16,"Osaka",19281000
+58,11,"Paris",10901000
+59,35,"Philadelphia",5695000
+60,12,"Pune",6276000
+61,7,"Qingdao",5381000
+62,4,"Rio de Janeiro",13293000
+63,25,"Riyadh",6907000
+64,24,"Saint Petersburg",5383000
+65,6,"Santiago",6680000
+66,4,"São Paulo",21650000
+67,28,"Seoul",9963000
+68,7,"Shanghai",25582000
+69,7,"Shenyang",6921000
+70,7,"Shenzhen",11908000
+71,26,"Singapore",5792000
+72,12,"Surat",6564000
+73,7,"Suzhou",6339000
+74,14,"Tehran",8896000
+75,7,"Tianjin",13215000
+76,16,"Tokyo",37468000
+77,5,"Toronto",6082000
+78,35,"Washington",5207000
+79,7,"Wuhan",8176000
+80,7,"Xi'an",7444000
+81,19,"Yangon",5157000
