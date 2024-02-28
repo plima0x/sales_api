@@ -1,5 +1,4 @@
-from psycopg import rows, connect, DatabaseError, ProgrammingError
-import base64
+from psycopg import rows, connect, DatabaseError, ProgrammingError, InterfaceError
 import os
 from typing import List
 
@@ -10,10 +9,9 @@ def get_dsn() -> str:
     :return: A string representing the database connection.
     """
     db_conn = os.getenv("DB_DSN")
-    base_conn, conn_passwd = db_conn.split("password=")
-    decoded_passwd = base64.b64decode(conn_passwd.encode()).decode()
-    db_full_conn = base_conn + " password=" + decoded_passwd
-    return db_full_conn
+    if not db_conn:
+        raise InterfaceError
+    return db_conn
 
 
 # Functions to create the schema:
@@ -26,7 +24,7 @@ def create_tables():
     tables_created = False
     create_country_sql = """
     CREATE TABLE IF NOT EXISTS tb_countries
-    (cod_country  SERIAL      NOT NULL,
+    (cod_country  SERIAL NOT NULL,
      desc_country VARCHAR(80) NOT NULL);
     """
     create_city_sql = """
@@ -42,10 +40,10 @@ def create_tables():
      desc_product VARCHAR(80) NOT NULL
     );"""
     create_sale_by_city_sql = """
-    CREATE TABLE IF NOT EXISTS tb_sale_by_city
+    CREATE TABLE IF NOT EXISTS tb_sales
     (cod_sale              SERIAL      NOT NULL,
      cod_city              INTEGER     NOT NULL,
-     cod_most_sold_prod    INTEGER     NOT NULL,
+     cod_product           INTEGER     NOT NULL,
      qtd_web_purchases     INTEGER     NOT NULL,
      qtd_refunds           INTEGER     NOT NULL
     );
@@ -65,7 +63,8 @@ def create_tables():
         print(f"[!] A programming error occurred while creating the tables: {pge}")
     except DatabaseError as dbe:
         print(f"[!] A database error occurred while creating the tables: {dbe}")
-
+    except InterfaceError:
+        print("[!] Error while creating the tables: environment variable DB_DSN not found.")
     return tables_created
 
 
@@ -116,25 +115,26 @@ def create_constraints():
     UNIQUE(desc_product);
     """
     create_sale_by_city_pk = """
-    ALTER TABLE tb_sale_by_city
+    ALTER TABLE tb_sales
     ADD CONSTRAINT pk_cod_sale 
     PRIMARY KEY(cod_sale);
     """
     create_sale_by_city_city_fk = """
-    ALTER TABLE tb_sale_by_city 
+    ALTER TABLE tb_sales 
     ADD CONSTRAINT fk_cod_city 
     FOREIGN KEY(cod_city)
     REFERENCES tb_cities(cod_city)
     ON DELETE CASCADE;
     """
+
     create_sale_by_city_prod_fk = """
-    ALTER TABLE tb_sale_by_city 
+    ALTER TABLE tb_sales 
     ADD CONSTRAINT fk_cod_product 
-    FOREIGN KEY(cod_most_sold_prod)
+    FOREIGN KEY(cod_product)
     REFERENCES tb_products(cod_product);
     """
     create_sale_by_city_un = """
-    ALTER TABLE tb_sale_by_city
+    ALTER TABLE tb_sales
     ADD CONSTRAINT un_cod_city
     UNIQUE (cod_city);
     """
@@ -175,6 +175,9 @@ def create_constraints():
     except DatabaseError as dbe:
         print(f"[!] An database error occurred while creating constraints: {dbe}")
 
+    except InterfaceError:
+        print("[!] Error while creating the constraints: environment variable DB_DSN not found.")
+
     return constraints_created
 
 
@@ -214,6 +217,9 @@ def insert_data(function_name, insert_query, insert_data_list) -> bool:
     except DatabaseError as dbe:
         print(f"[!] An database error occurred in {function_name} while inserting on table: {dbe}")
 
+    except InterfaceError:
+        print("[!] Error while inserting into tables: environment variable DB_DSN not found.")
+
     return data_inserted
 
 
@@ -224,20 +230,20 @@ def populate_all_tables():
     """
     func_name = populate_all_tables.__name__
     country_insert_query = """
-    INSERT INTO tb_countries(cod_country, desc_country)
-    VALUES(%s, %s);
+    INSERT INTO tb_countries(desc_country)
+    VALUES(%s);
     """
     city_insert_query = """
-    INSERT INTO tb_cities (cod_city, cod_country, desc_city, qtd_population)
-    VALUES(%s, %s, %s, %s);
+    INSERT INTO tb_cities (cod_country, desc_city, qtd_population)
+    VALUES(%s, %s, %s);
     """
     product_insert_query = """
-    INSERT INTO tb_products(cod_product, desc_product)
-    VALUES(%s, %s)
+    INSERT INTO tb_products(desc_product)
+    VALUES(%s)
     """
     sale_by_city_insert_query = """
-    INSERT INTO tb_sale_by_city(cod_sale, cod_city, qtd_web_purchases, cod_most_sold_prod, qtd_refunds)
-    VALUES(%s, %s, %s, %s, %s);
+    INSERT INTO tb_sales(cod_city, qtd_web_purchases, cod_product, qtd_refunds)
+    VALUES(%s, %s, %s, %s);
     """
     insert_items = [("tb_countries_data.csv", country_insert_query),
                     ("tb_cities_data.csv", city_insert_query),
