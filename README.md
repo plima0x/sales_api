@@ -44,13 +44,22 @@ pip install -r requirements.txt
 
 ```
 
-You need to create a environment variable with the name **DB_DSN**. This will store the string required to connect to the database.
+You need to create a environment variable with the name **DB_DSN**. This will store the string required to connect to the postgresql database.
 
 The environment variable will have the value: **'dbname=you_db_name user=your_db_user host=your_server_ip_addr port=your_server_port password=your_db_password'**.
 
 Substitute the values after the "=" sign with your own database information.
 
 ## Getting started:
+
+Run the script to create the tables and insert the api data:
+
+```
+
+python3 create_schema.py 
+
+
+```
 
 Run the development server:
 
