@@ -1,4 +1,4 @@
-from psycopg import rows, connect, DatabaseError, ProgrammingError, InterfaceError
+from psycopg import rows, connect, DatabaseError, ProgrammingError, InterfaceError, OperationalError
 import os
 from typing import List
 
@@ -12,6 +12,24 @@ def get_dsn() -> str:
     if not db_conn:
         raise InterfaceError
     return db_conn
+
+
+def is_dsn_valid():
+    """
+    Verifies if it is possible to connect to the database.
+    :return: True if the connection was a success, False otherwise.
+    """
+    dns_valid = False
+    try:
+        print("[+] Testing the database connection...")
+        with connect(get_dsn()):
+            dns_valid = True
+        print("[+] The connection was a success\n")
+    except InterfaceError:
+        print("[!] DB_DSN variable not found!")
+    except OperationalError:
+        print("[!] Failed to connect to the database. Please, verify the connection string in the DB_DSN variable")
+    return dns_valid
 
 
 # Functions to create the schema:
@@ -63,8 +81,6 @@ def create_tables():
         print(f"[!] A programming error occurred while creating the tables: {pge}")
     except DatabaseError as dbe:
         print(f"[!] A database error occurred while creating the tables: {dbe}")
-    except InterfaceError:
-        print("[!] Error while creating the tables: environment variable DB_DSN not found.")
     return tables_created
 
 
@@ -167,16 +183,11 @@ def create_constraints():
                 print("[+] Constraints created\n")
                 constraints_created = True
 
-
-
     except ProgrammingError as pge:
         print(f"[!] A programming error occurred while creating constraints: {pge}")
 
     except DatabaseError as dbe:
         print(f"[!] An database error occurred while creating constraints: {dbe}")
-
-    except InterfaceError:
-        print("[!] Error while creating the constraints: environment variable DB_DSN not found.")
 
     return constraints_created
 
@@ -216,9 +227,6 @@ def insert_data(function_name, insert_query, insert_data_list) -> bool:
 
     except DatabaseError as dbe:
         print(f"[!] An database error occurred in {function_name} while inserting on table: {dbe}")
-
-    except InterfaceError:
-        print("[!] Error while inserting into tables: environment variable DB_DSN not found.")
 
     return data_inserted
 
